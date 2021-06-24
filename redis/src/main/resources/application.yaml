@@ -1,0 +1,33 @@
+cache:
+  config:
+    default-configs:
+      - cache-name: ONE_HOUR_CACHE         
+        time-to-live-seconds: 3600 
+      - cache-name: TEN_MINUTES_CACHE
+        time-to-live-seconds: 600
+
+  app-caches:
+    app-cache-map:
+      service-one-cache: ONE_HOUR_CACHE
+      service-two-cache: TEN_MINUTES_CACHE   
+
+spring:
+  cache:
+    type: redis
+  redis:
+    port: 26379
+    password: hai
+    sentinel:
+      master: mymaster
+      nodes:
+        - 192.168.56.110
+        - 192.168.56.109
+        - 192.168.56.111
+    lettuce:
+      shutdown-timeout: 200ms     
+
+logging:
+  level:
+    org.springframework.data.redis: DEBUG
+    org.springframework.cache: DEBUG
+
