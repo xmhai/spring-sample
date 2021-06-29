@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://activiti.org/bpmn20" id="review-definitions">
+  <process id="activitiLicenceApplication" name="Licence Application Process" isExecutable="true">
+    <startEvent id="startevent1" name="Start"></startEvent>
+    <userTask id="evaluateApplication" name="Evaluate Application" activiti:candidateGroups="po_grp"></userTask>
+    <sequenceFlow id="flow1" sourceRef="startevent1" targetRef="evaluateApplication"></sequenceFlow>
+    <exclusiveGateway id="evaluateGateway" name="Evaluate Application Outcome">
+      <documentation>Evaluate Application Outcome</documentation>
+    </exclusiveGateway>
+    <sequenceFlow id="flow2" sourceRef="evaluateApplication" targetRef="evaluateGateway"></sequenceFlow>
+    <userTask id="approveApplication" name="Approve Application" activiti:candidateGroups="ao_grp"></userTask>
+    <sequenceFlow id="flow3" name="Sent for approval" sourceRef="evaluateGateway" targetRef="approveApplication">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${evaluationOutcome == 'success'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow4" sourceRef="approveApplication" targetRef="approvalGateway"></sequenceFlow>
+    <exclusiveGateway id="approvalGateway" name="Application Approval Gateway"></exclusiveGateway>
+    <sequenceFlow id="flow5" name="Approved" sourceRef="approvalGateway" targetRef="servicetask1">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${approvalOutcome == 'success'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow6" name="Rejected" sourceRef="approvalGateway" targetRef="servicetask2">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${approvalOutcome == 'failed'}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="endevent1" name="End"></endEvent>
+    <sequenceFlow id="flow7" sourceRef="servicetask1" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow8" sourceRef="servicetask2" targetRef="endevent1"></sequenceFlow>
+    <sequenceFlow id="flow9" name="Reassigned" sourceRef="evaluateGateway" targetRef="evaluateApplication">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${evaluationOutcome == 'reassigned'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow10" name="Reassigned" sourceRef="approvalGateway" targetRef="approveApplication">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${approvalOutcome == 'reassigned'}]]></conditionExpression>
+    </sequenceFlow>
+    <serviceTask id="servicetask1" name="Generate licence" activiti:class="com.cl.smart.flow.service.ActivitiCallbackService">
+      <extensionElements>
+        <activiti:field name="url">
+          <activiti:string><![CDATA[http://localhost:8104/applications/]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="method">
+          <activiti:string><![CDATA[put]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="body">
+          <activiti:expression><![CDATA[{"id":"#{applicationId}","status":"APPROVED"}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+    <serviceTask id="servicetask2" name="Inform applicant of rejected" activiti:class="com.cl.smart.flow.service.ActivitiCallbackService">
+      <extensionElements>
+        <activiti:field name="url">
+          <activiti:string><![CDATA[http://localhost:8104/applications/]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="method">
+          <activiti:string><![CDATA[put]]></activiti:string>
+        </activiti:field>
+        <activiti:field name="body">
+          <activiti:expression><![CDATA[{"id":"#{applicationId}","status":"REJECTED"}]]></activiti:expression>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_activitiLicenceApplication">
+    <bpmndi:BPMNPlane bpmnElement="activitiLicenceApplication" id="BPMNPlane_activitiLicenceApplication">
+      <bpmndi:BPMNShape bpmnElement="startevent1" id="BPMNShape_startevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="60.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="evaluateApplication" id="BPMNShape_evaluateApplication">
+        <omgdc:Bounds height="55.0" width="105.0" x="140.0" y="200.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="evaluateGateway" id="BPMNShape_evaluateGateway">
+        <omgdc:Bounds height="40.0" width="40.0" x="280.0" y="208.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="approveApplication" id="BPMNShape_approveApplication">
+        <omgdc:Bounds height="55.0" width="105.0" x="420.0" y="200.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="approvalGateway" id="BPMNShape_approvalGateway">
+        <omgdc:Bounds height="40.0" width="40.0" x="610.0" y="208.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endevent1" id="BPMNShape_endevent1">
+        <omgdc:Bounds height="35.0" width="35.0" x="880.0" y="210.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask1" id="BPMNShape_servicetask1">
+        <omgdc:Bounds height="55.0" width="105.0" x="713.0" y="201.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="servicetask2" id="BPMNShape_servicetask2">
+        <omgdc:Bounds height="61.0" width="105.0" x="713.0" y="300.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="95.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="140.0" y="227.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="245.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="280.0" y="228.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow3" id="BPMNEdge_flow3">
+        <omgdi:waypoint x="320.0" y="228.0"></omgdi:waypoint>
+        <omgdi:waypoint x="420.0" y="227.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="84.0" x="319.0" y="229.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
+        <omgdi:waypoint x="525.0" y="227.0"></omgdi:waypoint>
+        <omgdi:waypoint x="610.0" y="228.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
+        <omgdi:waypoint x="650.0" y="228.0"></omgdi:waypoint>
+        <omgdi:waypoint x="713.0" y="228.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="48.0" x="649.0" y="210.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow6" id="BPMNEdge_flow6">
+        <omgdi:waypoint x="630.0" y="248.0"></omgdi:waypoint>
+        <omgdi:waypoint x="629.0" y="327.0"></omgdi:waypoint>
+        <omgdi:waypoint x="713.0" y="330.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="42.0" x="582.0" y="279.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
+        <omgdi:waypoint x="818.0" y="228.0"></omgdi:waypoint>
+        <omgdi:waypoint x="880.0" y="227.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
+        <omgdi:waypoint x="818.0" y="330.0"></omgdi:waypoint>
+        <omgdi:waypoint x="897.0" y="327.0"></omgdi:waypoint>
+        <omgdi:waypoint x="897.0" y="245.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow9" id="BPMNEdge_flow9">
+        <omgdi:waypoint x="300.0" y="208.0"></omgdi:waypoint>
+        <omgdi:waypoint x="299.0" y="163.0"></omgdi:waypoint>
+        <omgdi:waypoint x="245.0" y="163.0"></omgdi:waypoint>
+        <omgdi:waypoint x="192.0" y="163.0"></omgdi:waypoint>
+        <omgdi:waypoint x="192.0" y="200.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="57.0" x="301.0" y="184.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
+        <omgdi:waypoint x="630.0" y="208.0"></omgdi:waypoint>
+        <omgdi:waypoint x="629.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="550.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="472.0" y="167.0"></omgdi:waypoint>
+        <omgdi:waypoint x="472.0" y="200.0"></omgdi:waypoint>
+        <bpmndi:BPMNLabel>
+          <omgdc:Bounds height="14.0" width="57.0" x="631.0" y="184.0"></omgdc:Bounds>
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

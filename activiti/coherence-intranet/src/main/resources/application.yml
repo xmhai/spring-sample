@@ -1,0 +1,12 @@
+# app server
+server:
+    port: 8106
+
+# spring configuration
+spring:
+  application:
+    name: coherence-intranet
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp

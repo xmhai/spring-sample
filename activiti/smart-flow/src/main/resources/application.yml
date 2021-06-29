@@ -1,0 +1,21 @@
+# app server
+server:
+    port: 8103
+
+# spring configuration
+spring:
+  application:
+    name: smart-flow
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://localhost:1433;databaseName=activiti
+    username: activiti
+    password: "pass#1234"
+  activiti:
+    check-process-definitions: false    
+  jpa:
+    hibernate:
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    
