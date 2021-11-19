@@ -1,0 +1,6 @@
+com\lin\microservices\api\core\review\Review.class
+com\lin\microservices\api\core\product\ProductService.class
+com\lin\microservices\api\core\review\ReviewService.class
+com\lin\microservices\api\core\recommendation\RecommendationService.class
+com\lin\microservices\api\core\product\Product.class
+com\lin\microservices\api\core\recommendation\Recommendation.class
