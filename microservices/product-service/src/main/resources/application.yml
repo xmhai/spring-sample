@@ -5,6 +5,11 @@ logging:
     root: INFO
     com.lin: DEBUG
 
+spring:
+  data:
+    mongodb:
+      auto-index-creation: true
+
 ---
 spring.profiles: docker
 
