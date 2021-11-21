@@ -60,14 +60,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>io.springfox</groupId>
-                            <artifactId>springfox-boot-starter</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
             </plugin>
 		</plugins>
 	</build>
