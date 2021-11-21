@@ -3,6 +3,7 @@ package com.lin.microservices.util.http;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
@@ -28,7 +29,8 @@ class GlobalControllerExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ExceptionHandler(value 
+    	      = {MethodArgumentTypeMismatchException.class, MissingServletRequestParameterException.class} )
     public HttpErrorInfo handleMethodArgumentTypeMismatchException(Exception ex, HttpServletRequest request) {
         return createHttpErrorInfo(HttpStatus.BAD_REQUEST, request, "Bad Arguments");
     }
@@ -36,6 +38,7 @@ class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public HttpErrorInfo handleException(Exception ex, HttpServletRequest request) {
+    	ex.printStackTrace();
         return createHttpErrorInfo(HttpStatus.INTERNAL_SERVER_ERROR, request, "System Error");
     }
     
