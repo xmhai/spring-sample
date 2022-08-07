@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class SqsQueueListener {
-	@MessageMapping("MyQueue")
+	@MessageMapping("${sqs.testQueue}")
 	private void receiveMessage(String message, @Header("SenderId") String senderId) {
 	    System.out.println("Message Received: "+message+ ", from: "+senderId);
 	}

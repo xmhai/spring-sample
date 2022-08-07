@@ -2,3 +2,9 @@ cloud:
   aws:
     region.static: ap-southeast-1
     stack.auto: false
+
+sqs:
+  testQueue: https://sqs.ap-southeast-1.amazonaws.com/752871168029/MyQueue
+
+s3:
+  testBucket: s3://linhai-bucket
