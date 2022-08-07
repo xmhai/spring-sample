@@ -1,4 +1,4 @@
-package com.lin.example.batch.consolejob;
+package com.lin.example.batch.stock;
 
 import javax.sql.DataSource;
 

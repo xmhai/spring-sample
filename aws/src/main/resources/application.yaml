@@ -1,0 +1,7 @@
+cloud:
+  aws:
+    credentials:
+      access-key: AKIA26SU6LAO3BXLHP7G
+      secret-key: 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
+    region.static: ap-southeast-1
+    stack.auto: false # Disable auto cloudformation
