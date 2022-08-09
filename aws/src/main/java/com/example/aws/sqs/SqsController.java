@@ -2,6 +2,7 @@ package com.example.aws.sqs;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +13,7 @@ public class SqsController {
 	private SqsQueueSender sqsQueueSender;
 	
 	@PostMapping("/send")
-	public void send(String message) {
-		sqsQueueSender.send("Hello, world!");
+	public void send(@RequestBody String message) {
+		sqsQueueSender.send(message);
 	}
 }
