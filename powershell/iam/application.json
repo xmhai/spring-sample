@@ -1,0 +1,20 @@
+{
+	"applications" : [
+		{
+			"id" : "id1",
+			"publicId" : "publicId1",
+			"name" : "name1",
+			"organizationId" : "organizationId1",
+			"contactUserName" : "contactUserName1",
+			"applicationTags" : []
+		},
+		{
+			"id" : "id2",
+			"publicId" : "publicId2",
+			"name" : "name2",
+			"organizationId" : "organizationId2",
+			"contactUserName" : "contactUserName2",
+			"applicationTags" : []
+		}
+	]
+}
