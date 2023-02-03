@@ -1,0 +1,1 @@
+curl -u http://test.com/application/%1$s/role/roleid/user/%2$s
