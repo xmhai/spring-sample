@@ -20,7 +20,8 @@ foreach($line in Get-Content request.txt) {
 			if($application.name -eq $appToAdd) {
 				$appIdFound = $true
 				$appId = $application.id
-				Write-Host "curl -x http://nexuspru.com/application/$appId/role/2349458578475874389/user/$userId"
+				Write-Host "curl http://nexuspru.com/application/$appId/role/2349458578475874389/user/$userId"
+				cmd.exe /c "curl http://nexuspru.com/application/$appId/role/2349458578475874389/user/$userId"
 				break;
 			}
 		}
