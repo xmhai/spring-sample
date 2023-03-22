@@ -1,0 +1,22 @@
+spring:
+  server:
+    port: 8081
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: test-client
+            client-secret: 378oGk2Dq9hvFwghJ7hFcMXDKpbAFVrI
+            redirect-uri: http://localhost:8080/login/oauth2/code/keycloak
+            authorization-grant-type: authorization_code
+            scope: openid
+            provider: keycloak
+        provider:
+          keycloak:
+            issuer-uri: http://srv:8280/auth/realms/test
+            authorization-uri: http://srv:8280/auth/realms/test/protocol/openid-connect/auth
+            token-uri: http://srv:8280/auth/realms/test/protocol/openid-connect/token
+            user-info-uri: http://srv:8280/auth/realms/test/protocol/openid-connect/userinfo
+            jwk-set-uri: http://srv:8280/auth/realms/test/protocol/openid-connect/certs
+            userNameAttribute: preferred_username
