@@ -21,10 +21,9 @@
       
     // Check if the user is authenticated on page load
     const jwt = localStorage.getItem('jwt');
-    alert(jwt);
+    console.log(jwt);
     if (jwt) {
       // login user, redirect to resource page (no possible to do a redirection with header set)
-      alert('Fetch user information');
       fetch('http://localhost:8082/api/userinfo', {
         headers: {
           'Authorization': `Bearer ${jwt}`
@@ -45,7 +44,6 @@
       });      
     } else {
       // not login
-      alert('Not login yet');
       window.location.replace("http://localhost:8081/login");
     }
   </script>
