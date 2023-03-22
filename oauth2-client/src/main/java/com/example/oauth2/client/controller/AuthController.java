@@ -43,7 +43,8 @@ public class AuthController {
 		}
 		
 		System.out.println("ID Token: "+principal.getIdToken().getTokenValue());
-	        
-		return "redirect:/";
+	    
+		String redirectUrl = "http://localhost:8080/#id-token=" + accessToken.getTokenValue(); //principal.getIdToken().getTokenValue();  
+		return "redirect:" + redirectUrl;
 	}
 }

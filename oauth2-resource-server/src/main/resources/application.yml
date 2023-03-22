@@ -1,0 +1,14 @@
+server:
+  port: 8082
+  
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://srv:8280/auth/realms/test
+          jwk-set-uri: http://srv:8280/auth/realms/test/protocol/openid-connect/certs
+
+logging:
+  level:
+    org.springframework.security: DEBUG          

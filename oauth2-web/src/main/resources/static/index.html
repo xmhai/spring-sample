@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JWT Authentication Example</title>
+</head>
+<body>
+  <h1>Welcome to the JWT Authentication Example</h1>
+  
+  <script>
+    const parsedHash = new URLSearchParams(
+      window.location.hash.substring(1) // skip the first char (#)
+    );
+
+	var id_token = parsedHash.get("id-token");
+    console.log(id_token);
+	if (id_token) {
+	    // Store the JWT in local storage
+	    localStorage.setItem('jwt', id_token);
+	    console.log('token saved');
+	} 
+      
+    // Check if the user is authenticated on page load
+    const jwt = localStorage.getItem('jwt');
+    alert(jwt);
+    if (jwt) {
+      // login user, redirect to resource page (no possible to do a redirection with header set)
+      alert('Fetch user information');
+      fetch('http://localhost:8082/api/userinfo', {
+        headers: {
+          'Authorization': `Bearer ${jwt}`
+        }
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Authentication failed');
+        }
+        return response.json();
+      })
+      .then(data => {
+        alert(`Welcome ${data.username}`);
+      })
+      .catch(error => {
+        console.error(error);
+        alert('Authentication failed');
+      });      
+    } else {
+      // not login
+      alert('Not login yet');
+      window.location.replace("http://localhost:8081/login");
+    }
+  </script>
+</body>
+</html>

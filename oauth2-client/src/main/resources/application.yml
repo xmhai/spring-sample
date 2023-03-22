@@ -1,6 +1,6 @@
+server:
+  port: 8081
 spring:
-  server:
-    port: 8081
   security:
     oauth2:
       client:
@@ -8,7 +8,7 @@ spring:
           keycloak:
             client-id: test-client
             client-secret: 378oGk2Dq9hvFwghJ7hFcMXDKpbAFVrI
-            redirect-uri: http://localhost:8080/login/oauth2/code/keycloak
+            redirect-uri: http://localhost:8081/login/oauth2/code/keycloak
             authorization-grant-type: authorization_code
             scope: openid
             provider: keycloak
