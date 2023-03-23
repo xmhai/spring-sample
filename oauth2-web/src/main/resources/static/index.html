@@ -11,11 +11,11 @@
       window.location.hash.substring(1) // skip the first char (#)
     );
 
-	var id_token = parsedHash.get("id-token");
-    console.log(id_token);
-	if (id_token) {
+	var token = parsedHash.get("token");
+    console.log(token);
+	if (token) {
 	    // Store the JWT in local storage
-	    localStorage.setItem('jwt', id_token);
+	    localStorage.setItem('jwt', token);
 	    console.log('token saved');
 	} 
       
@@ -36,7 +36,11 @@
         return response.json();
       })
       .then(data => {
-        alert(`Welcome ${data.username}`);
+	    console.log(data);
+		node = document.createTextNode(JSON.stringify(data));
+		div = document.createElement("div");
+		div.appendChild(node);
+		document.body.appendChild(div);      
       })
       .catch(error => {
         console.error(error);
