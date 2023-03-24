@@ -29,6 +29,8 @@ public class OAuth2ClientConfig {
         	.anyRequest()
 	        .authenticated();
         
+        // Default Spring will generate a login page with list of providers, specify the loginPage if want to skip default selection page
+        // User defaultSuccessUrl to pass the token back to SPA
         http.oauth2Login().loginPage("/oauth2/authorization/keycloak").defaultSuccessUrl("/redirectfrontend", true);
 
         http.logout()

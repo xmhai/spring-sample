@@ -8,15 +8,17 @@ spring:
           keycloak:
             client-id: test-client
             client-secret: 378oGk2Dq9hvFwghJ7hFcMXDKpbAFVrI
+            # Spring Boot generates the redirect URI automatically with the form {baseUrl}/login/oauth2/code/{registrationId}
             redirect-uri: http://localhost:8081/login/oauth2/code/keycloak
             authorization-grant-type: authorization_code
-            scope: openid
+            scope: openid, profile
             provider: keycloak
         provider:
           keycloak:
+            # if issuer-uri is set, the rest enpoint can be query from it thus no need to set
             issuer-uri: http://srv:8280/auth/realms/test
-            authorization-uri: http://srv:8280/auth/realms/test/protocol/openid-connect/auth
-            token-uri: http://srv:8280/auth/realms/test/protocol/openid-connect/token
-            user-info-uri: http://srv:8280/auth/realms/test/protocol/openid-connect/userinfo
-            jwk-set-uri: http://srv:8280/auth/realms/test/protocol/openid-connect/certs
+            #authorization-uri: http://srv:8280/auth/realms/test/protocol/openid-connect/auth
+            #token-uri: http://srv:8280/auth/realms/test/protocol/openid-connect/token
+            #user-info-uri: http://srv:8280/auth/realms/test/protocol/openid-connect/userinfo
+            #jwk-set-uri: http://srv:8280/auth/realms/test/protocol/openid-connect/certs
             userNameAttribute: preferred_username
