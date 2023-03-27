@@ -3,6 +3,10 @@ server:
 spring:
   security:
     oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://srv:8280/auth/realms/test
+          jwk-set-uri: http://srv:8280/auth/realms/test/protocol/openid-connect/certs
       client:
         registration:
           keycloak:
@@ -22,3 +26,8 @@ spring:
             #user-info-uri: http://srv:8280/auth/realms/test/protocol/openid-connect/userinfo
             #jwk-set-uri: http://srv:8280/auth/realms/test/protocol/openid-connect/certs
             userNameAttribute: preferred_username
+
+logging:
+  level:
+    org.springframework.security: TRACE
+            
