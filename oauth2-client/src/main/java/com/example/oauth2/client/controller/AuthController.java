@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -21,11 +20,9 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -70,13 +67,16 @@ public class AuthController {
 	}
 
 	@GetMapping("/serverlogout")
-	public String serverlogout(HttpServletRequest request, HttpServletResponse response, @AuthenticationPrincipal Jwt principal) {
+	public String serverlogout(HttpServletRequest request, HttpServletResponse response) {
+		// logout out from keycloak
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		OAuth2AuthenticationToken oauthToken = (OAuth2AuthenticationToken) authentication;
         logoutFromKeycloak((OidcUser) oauthToken.getPrincipal());
 		
+        // clear spring security sesssion
         clearSession(request, response);
 		String redirectUrl = "http://localhost:8080/";
+		
 		return "redirect:" + redirectUrl;
 	}
 

@@ -12,12 +12,6 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 @Configuration
 @EnableWebSecurity
 public class OAuth2ClientConfig {
-    private KeycloakLogoutHandler keycloakLogoutHandler;
-
-    OAuth2ClientConfig(KeycloakLogoutHandler keycloakLogoutHandler) {
-        this.keycloakLogoutHandler = keycloakLogoutHandler;
-    }
-
     @Bean
     protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {
         return new RegisterSessionAuthenticationStrategy(new SessionRegistryImpl());
@@ -33,10 +27,6 @@ public class OAuth2ClientConfig {
         // User defaultSuccessUrl to pass the token back to SPA
         http.oauth2Login().loginPage("/oauth2/authorization/keycloak").defaultSuccessUrl("/redirectfrontend", true);
 
-        http.logout()
-            .addLogoutHandler(keycloakLogoutHandler)
-            .logoutSuccessUrl("/login");
-        
         return http.build();
     }
 }
