@@ -17,6 +17,7 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ContainerProperties.AckMode;
 import org.springframework.kafka.listener.ErrorHandler;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.kafka.listener.DefaultErrorHandler;
 
@@ -28,7 +29,7 @@ import org.springframework.util.backoff.FixedBackOff;
 public class KafkaConsumerConfig {
 	private Long interval = 1000L; // 1s
 
-	private Long maxAttempts = 10L;
+	private Long maxAttempts = 3L;
 
 	private static int messageReceived = 0;
 	
@@ -59,13 +60,13 @@ public class KafkaConsumerConfig {
 		factory.setConsumerFactory(consumerFactory());
 		factory.setCommonErrorHandler(errorHandler());
 		factory.setConcurrency(1);
-		factory.getContainerProperties().setAckMode(AckMode.BATCH);
+		factory.getContainerProperties().setAckMode(AckMode.MANUAL_IMMEDIATE);
 	    factory.afterPropertiesSet();
 		return factory;
 	}
 
 	@KafkaListener(topics = "my-topic", groupId = "foo")
-	public void listen(@Payload String message, @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition) throws Exception {
+	public void listen(@Payload String message, Acknowledgment ack, @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition) throws Exception {
 		messageReceived++;
 		Thread t = Thread.currentThread();
 		System.out.println("Total number of message received: " + messageReceived);
@@ -75,8 +76,10 @@ public class KafkaConsumerConfig {
 	    		+ "; Received Message: " + message);
 	    Thread.sleep(3000);
 	    
-	    if (messageReceived>=10) {
+	    if (messageReceived>=3) {
 		    throw new Exception("Error thrown when processing the message");
 	    }
+	    
+	    ack.acknowledge();
 	}
 }

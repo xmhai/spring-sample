@@ -10,7 +10,7 @@ import org.springframework.security.web.authentication.session.RegisterSessionAu
 import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug=true)
 public class OAuth2ClientConfig {
     @Bean
     protected SessionAuthenticationStrategy sessionAuthenticationStrategy() {

@@ -26,4 +26,5 @@ spring:
 logging:
   level:
     org.springframework.security: TRACE
+    org.springframework.web.client.RestTemplate: DEBUG
             
